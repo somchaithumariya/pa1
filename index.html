@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ระบบช่วยร่างประเด็นท้าทาย (PA 1/ส) - ก.ค.ศ.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        prompt: ['Prompt', 'sans-serif'],
+                        sarabun: ['Sarabun', 'sans-serif']
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f6ff',
+                            100: '#e0edff',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                        'card': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Sarabun', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        h1, h2, h3, h4, button, label, input, select, textarea { 
+            font-family: 'Prompt', sans-serif; 
+        }
+        .hero-gradient { 
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%); 
+        }
+        .accent-gradient {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        }
+        .chip-btn { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .chip-btn:active { 
+            transform: scale(0.96); 
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+        }
+        /* Custom Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Smooth Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-full flex flex-col antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Header Section -->
+    <header class="hero-gradient text-white sticky top-0 z-30 shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 md:py-4 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 md:w-11 md:h-11 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/20 shadow-inner shrink-0">
+                    <i class="fa-solid fa-graduation-cap text-xl md:text-2xl text-amber-300"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-2xl font-bold tracking-tight leading-tight">ระบบร่างประเด็นท้าทาย (PA 1/ส)</h1>
+                    <p class="text-[11px] md:text-xs text-blue-100 font-light flex items-center gap-1.5 opacity-90">
+                        <span>เกณฑ์ ก.ค.ศ. สำหรับครูมัธยมศึกษาตอนต้น (ม.1 - ม.3)</span>
+                    </p>
+                </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-2">
+                <span id="aiBadge" class="bg-white/10 hover:bg-white/20 text-amber-300 border border-amber-300/30 text-xs px-3.5 py-1.5 rounded-full flex items-center gap-2 backdrop-blur-md transition">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <i class="fa-solid fa-brain"></i>
+                    <span class="font-medium">โหมดประมวลผล AI</span>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-3.5 sm:p-5 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6">
+
+        <!-- Input Form Section -->
+        <section class="lg:col-span-5 bg-white p-4 sm:p-5 md:p-6 rounded-3xl shadow-card border border-slate-200/80 h-fit space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-slate-800 text-sm md:text-base">บริบทชั้นเรียน</h2>
+                        <p class="text-[11px] text-slate-400 font-normal">กรอกหรือเลือกข้อมูลเพียงไม่กี่ข้อ</p>
+                    </div>
+                </div>
+                <span class="text-[10px] sm:text-[11px] bg-blue-50 text-blue-700 font-medium px-2.5 py-1 rounded-full border border-blue-100 flex items-center gap-1">
+                    <i class="fa-solid fa-sparkles text-amber-500"></i> ก.ค.ศ. ยุคใหม่
+                </span>
+            </div>
+
+            <form id="paForm" onsubmit="generatePA(event)" class="space-y-4">
+                
+                <!-- 1. Learning Area & Subject Selection -->
+                <div class="space-y-3 bg-slate-50/70 p-3.5 rounded-2xl border border-slate-200/60">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1 flex items-center justify-between">
+                            <span>1.1 กลุ่มสาระการเรียนรู้ <span class="text-rose-500">*</span></span>
+                        </label>
+                        <select id="learningArea" onchange="handleAreaChange()" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition shadow-sm" required>
+                            <option value="คณิตศาสตร์">กลุ่มสาระการเรียนรู้คณิตศาสตร์</option>
+                            <option value="ภาษาไทย">กลุ่มสาระการเรียนรู้ภาษาไทย</option>
+                            <option value="วิทยาศาสตร์และเทคโนโลยี">กลุ่มสาระการเรียนรู้วิทยาศาสตร์และเทคโนโลยี</option>
+                            <option value="ภาษาต่างประเทศ">กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ</option>
+                            <option value="สังคมศึกษา ศาสนา และวัฒนธรรม">กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม</option>
+                            <option value="สุขศึกษาและพลศึกษา">กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา</option>
+                            <option value="ศิลปะ">กลุ่มสาระการเรียนรู้ศิลปะ</option>
+                            <option value="การงานอาชีพ">กลุ่มสาระการเรียนรู้การงานอาชีพ</option>
+                            <option value="กิจกรรมพัฒนาผู้เรียน">กลุ่มกิจกรรมพัฒนาผู้เรียน</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">
+                            1.2 รายวิชา <span class="text-rose-500">*</span>
+                            <span class="text-[10px] font-normal text-slate-400 block sm:inline">(เลือกจากรายการ หรือพิมพ์ชื่อวิชาเองได้)</span>
+                        </label>
+                        <input list="subjectOptions" id="subject" placeholder="เลือก หรือ พิมพ์ชื่อวิชาเอง..." class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition shadow-sm" required oninput="handleSubjectChange()" onchange="handleSubjectChange()" value="ลูกเสือ-เนตรนารีสามัญรุ่นใหญ่" />
+                        <datalist id="subjectOptions">
+                            <!-- Populated dynamically based on Learning Area -->
+                        </datalist>
+                    </div>
+                </div>
+
+                <!-- 2. Grade Level -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">2. ระดับชั้นเรียน <span class="text-rose-500">*</span></label>
+                    <select id="grade" class="w-full p-2.5 bg-slate-50/70 border border-slate-200/80 rounded-xl text-xs sm:text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition shadow-sm" required>
+                        <option value="มัธยมศึกษาปีที่ 1" selected>มัธยมศึกษาปีที่ 1</option>
+                        <option value="มัธยมศึกษาปีที่ 2">มัธยมศึกษาปีที่ 2</option>
+                        <option value="มัธยมศึกษาปีที่ 3">มัธยมศึกษาปีที่ 3</option>
+                        <!-- <option value="ประถมศึกษาปีที่ 4">ประถมศึกษาปีที่ 4</option>
+                        <option value="ประถมศึกษาปีที่ 5">ประถมศึกษาปีที่ 5</option>
+                        <option value="ประถมศึกษาปีที่ 6">ประถมศึกษาปีที่ 6</option> -->
+                    </select>
+                </div>
+
+                <!-- 3. Rank -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">3. วิทยฐานะประเมิน <span class="text-rose-500">*</span></label>
+                    <select id="rank" class="w-full p-2.5 bg-slate-50/70 border border-slate-200/80 rounded-xl text-xs sm:text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition shadow-sm" required>
+                        <option value="ครู (ไม่มีวิทยฐานะ)">ครู (ไม่มีวิทยฐานะ) - ปรับประยุกต์ใช้</option>
+                        <option value="ชำนาญการ" selected>ชำนาญการ - แก้ไขปัญหา</option>
+                        <option value="ชำนาญการพิเศษ">ชำนาญการพิเศษ - ริเริ่ม พัฒนา</option>
+                        <option value="เชี่ยวชาญ">เชี่ยวชาญ - คิดค้น ปรับเปลี่ยน</option>
+                    </select>
+                </div>
+
+                <!-- 4. Target Skill + Guidance Badges -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">4. ประเด็นปัญหา / ทักษะที่ต้องการแก้ <span class="text-rose-500">*</span></label>
+                    <input type="text" id="targetSkill" placeholder="พิมพ์เอง หรือแตะไกด์ไลน์ด้านล่าง..." class="w-full p-2.5 bg-slate-50/70 border border-slate-200/80 rounded-xl text-xs sm:text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none mb-2 transition shadow-sm" required />
+                    
+                    <div class="bg-blue-50/60 p-2.5 rounded-2xl border border-blue-100">
+                        <p class="text-[11px] font-semibold text-blue-800 mb-1.5 flex items-center gap-1">
+                            <i class="fa-regular fa-hand-pointer text-blue-600"></i> แตะเพื่อเลือกทักษะแนะนำ:
+                        </p>
+                        <div id="skillBadges" class="flex flex-wrap gap-1.5"></div>
+                    </div>
+                </div>
+
+                <!-- 5. Innovation + Guidance Badges -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">5. นวัตกรรม / สื่อ / รูปแบบการสอน <span class="text-rose-500">*</span></label>
+                    <input type="text" id="innovation" placeholder="พิมพ์เอง หรือแตะไกด์ไลน์ด้านล่าง..." class="w-full p-2.5 bg-slate-50/70 border border-slate-200/80 rounded-xl text-xs sm:text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none mb-2 transition shadow-sm" required />
+                    
+                    <div class="bg-emerald-50/60 p-2.5 rounded-2xl border border-emerald-100">
+                        <p class="text-[11px] font-semibold text-emerald-800 mb-1.5 flex items-center gap-1">
+                            <i class="fa-solid fa-wand-magic-sparkles text-emerald-600"></i> แตะเพื่อเลือกสื่อ/นวัตกรรมแนะนำ:
+                        </p>
+                        <div id="innovationBadges" class="flex flex-wrap gap-1.5"></div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3.5 px-4 rounded-2xl shadow-lg shadow-blue-500/25 transition duration-200 flex items-center justify-center gap-2 text-sm md:text-base mt-2">
+                    <i class="fa-solid fa-sparkles"></i>
+                    <span id="btnText">วิเคราะห์และร่าง PA1/ส ด้วย AI</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- Output Result Section -->
+        <section class="lg:col-span-7 bg-white p-4 sm:p-6 md:p-7 rounded-3xl shadow-card border border-slate-200/80 flex flex-col justify-between relative min-h-[420px]">
+            <div id="outputContent" class="space-y-6">
+                
+                <!-- Initial State Placeholder -->
+                <div id="placeholderState" class="text-center py-16 sm:py-20 px-4 my-auto">
+                    <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-3xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-sm border border-blue-100">
+                        <i class="fa-solid fa-file-signature"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-1.5">พร้อมสร้างร่างประเด็นท้าทาย</h3>
+                    <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto font-light leading-relaxed">
+                        เลือกข้อมูลบริบทชั้นเรียนด้านซ้าย แล้วกดปุ่มเพื่อรับร่าง PA 1/ส และโครงร่างเล่มรายงาน 5 บทด้วยภาษาวิชาการ ก.ค.ศ. ทันที
+                    </p>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="hidden text-center py-20 px-4 my-auto">
+                    <div class="relative w-16 h-16 mx-auto mb-4">
+                        <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+                        <div class="absolute inset-0 flex items-center justify-center text-blue-600">
+                            <i class="fa-solid fa-brain text-lg animate-pulse"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-1">กำลังประมวลผลตามเกณฑ์ ก.ค.ศ...</h3>
+                    <p class="text-xs sm:text-sm text-slate-500 max-w-xs mx-auto font-light">กำลังเรียบเรียงจิตวิทยาเด็กประถม สภาพปัญหา PDCA และภาษาทางราชการที่สละสลวย</p>
+                </div>
+
+                <!-- Generated Document Result -->
+                <div id="docResult" class="hidden text-slate-800 text-xs sm:text-sm space-y-6">
+                    <!-- Tag Header -->
+                    <div class="flex flex-wrap items-center justify-between border-b border-slate-100 pb-3.5 gap-2">
+                        <span class="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1.5" id="tagRank"></span>
+                        <span class="text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full" id="tagSubjectClass"></span>
+                    </div>
+
+                    <!-- Part 1: PA 1/s -->
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2 border-l-4 border-blue-600 pl-3">
+                            <h2 class="text-sm sm:text-base font-bold text-blue-900">ส่วนที่ 1: การเขียนประเด็นท้าทาย (PA 1/ส) ตามโครงสร้าง ก.ค.ศ.</h2>
+                        </div>
+
+                        <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
+                            <h3 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5 text-blue-900 mb-1">
+                                <i class="fa-solid fa-bookmark text-blue-600 text-xs"></i> 1. ชื่อประเด็นท้าทาย
+                            </h3>
+                            <p id="resTitle" class="font-semibold text-slate-900 leading-relaxed text-xs sm:text-sm mt-1"></p>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-xs sm:text-sm mb-1.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> 2. สภาพปัญหาการจัดการเรียนรู้และคุณภาพการเรียนรู้ของผู้เรียน
+                            </h3>
+                            <div id="resProblem" class="text-justify text-slate-700 whitespace-pre-line bg-slate-50/50 p-4 rounded-2xl border border-slate-200/80 leading-relaxed text-xs sm:text-sm"></div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-xs sm:text-sm mb-1.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrows-spin text-blue-600"></i> 3. วิธีการดำเนินการให้บรรลุผล (PDCA / Active Learning)
+                            </h3>
+                            <div id="resPDCA" class="text-justify text-slate-700 whitespace-pre-line bg-slate-50/50 p-4 rounded-2xl border border-slate-200/80 leading-relaxed text-xs sm:text-sm"></div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-xs sm:text-sm mb-1.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-bullseye text-emerald-600"></i> 4. ผลลัพธ์การพัฒนาที่คาดหวัง
+                            </h3>
+                            <div class="grid grid-cols-1 gap-2.5">
+                                <div class="bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-200/80 text-emerald-950 text-xs sm:text-sm">
+                                    <span class="font-bold text-emerald-900 block mb-1 flex items-center gap-1">
+                                        <i class="fa-solid fa-chart-line text-emerald-600"></i> เชิงปริมาณ:
+                                    </span> 
+                                    <span id="resQuant" class="leading-relaxed"></span>
+                                </div>
+                                <div class="bg-blue-50/70 p-3.5 rounded-2xl border border-blue-200/80 text-blue-950 text-xs sm:text-sm">
+                                    <span class="font-bold text-blue-900 block mb-1 flex items-center gap-1">
+                                        <i class="fa-solid fa-thumbs-up text-blue-600"></i> เชิงคุณภาพ:
+                                    </span> 
+                                    <span id="resQual" class="leading-relaxed"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="border-slate-200 my-4">
+
+                    <!-- Part 2: 5 Chapters Outline -->
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2 border-l-4 border-amber-500 pl-3">
+                            <h2 class="text-sm sm:text-base font-bold text-amber-950">ส่วนที่ 2: โครงร่างเล่มรายงานสรุปผลประเด็นท้าทาย (5 บท)</h2>
+                        </div>
+                        <div id="resFiveChapters" class="space-y-3 text-slate-700 text-xs sm:text-sm whitespace-pre-line bg-amber-50/30 p-4 rounded-2xl border border-amber-200/60 leading-relaxed"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div id="docActions" class="hidden border-t border-slate-100 pt-4 mt-6 flex flex-wrap items-center justify-between gap-2.5">
+                <button onclick="copyToClipboard()" class="flex-1 sm:flex-none bg-slate-800 hover:bg-slate-900 active:bg-black text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition shadow-sm">
+                    <i class="fa-regular fa-copy"></i> คัดลอกทั้งหมด
+                </button>
+                <button onclick="window.print()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition shadow-sm">
+                    <i class="fa-solid fa-print"></i> พิมพ์ / เซฟ PDF
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 left-5 sm:left-auto sm:max-w-xs bg-slate-900/95 text-white text-xs sm:text-sm px-4 py-3 rounded-2xl shadow-2xl opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2.5 z-50 backdrop-blur-md border border-slate-700">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toastMsg" class="font-medium"></span>
+    </div>
+
+    <script>
+        // Mapping of Learning Areas to specific subject suggestions
+        const areaSubjectMap = {
+            "คณิตศาสตร์": ["คณิตศาสตร์", "คณิตศาสตร์พื้นฐาน", "คณิตศาสตร์เพิ่มเติม", "คณิตศาสตร์เชิงคิดวิเคราะห์"],
+            "ภาษาไทย": ["ภาษาไทย", "ภาษาไทยพื้นฐาน", "การอ่านและการเขียนภาษาไทย", "ภาษาไทยเพื่อการสื่อสาร"],
+            "วิทยาศาสตร์และเทคโนโลยี": ["วิทยาศาสตร์และเทคโนโลยี", "วิทยาการคำนวณ", "ออกแบบและเทคโนโลยี", "วิทยาศาสตร์ประยุกต์"],
+            "ภาษาต่างประเทศ": ["ภาษาอังกฤษ", "ภาษาอังกฤษพื้นฐาน", "ภาษาอังกฤษเพื่อการสื่อสาร", "ภาษาจีน", "ภาษาญี่ปุ่น"],
+            "สังคมศึกษา ศาสนา และวัฒนธรรม": ["สังคมศึกษา ศาสนา และวัฒนธรรม", "ประวัติศาสตร์", "หน้าที่พลเมือง", "ศาสนา ศีลธรรม จริยธรรม", "ภูมิศาสตร์"],
+            "สุขศึกษาและพลศึกษา": ["สุขศึกษา", "พลศึกษา", "สุขศึกษาและพลศึกษา", "ทักษะการเคลื่อนไหว"],
+            "ศิลปะ": ["ทัศนศิลป์", "ดนตรี-นาฏศิลป์", "ศิลปะ", "ดนตรีไทย/ดนตรีสากล"],
+            "การงานอาชีพ": ["การงานอาชีพ", "งานบ้านงานเกษตร", "เทคโนโลยีการงานอาชีพ", "ทักษะอาชีพเบื้องต้น"],
+            "กิจกรรมพัฒนาผู้เรียน": ["ลูกเสือสำรองดาวดวงที่ 1", "ลูกเสือสำรองดาวดวงที่ 2", "ลูกเสือสำรองดาวดวงที่ 3", "ลูกเสือสามัญ ลูกเสือตรี", "ลูกเสือสามัญ ลูกเสือโท", "ลูกเสือสามัญ ลูกเสือเอก", "ลูกเสือสามัญรุ่นใหญ่ ลูกเสือโลก", "ลูกเสือสามัญรุ่นใหญ่ ลูกเสือชั้นพิเศษ", "ลูกเสือสามัญรุ่นใหญ่ ลูกเสือหลวง", ]
+        };
+
+        // Presets for subject skills and innovations
+        const presets = {
+            "คณิตศาสตร์": {
+                skills: ["การแก้โจทย์ปัญหาคณิตศาสตร์", "การคิดคำนวณและคิดเลขเร็ว", "ความเข้าใจค่าจำนวนและหลักเลข", "ทักษะการคิดวิเคราะห์เชิงคณิตศาสตร์"],
+                innovations: ["รูปแบบ Open Approach + สื่อรูปธรรม", "Gamification + สื่อ Wordwall/Quizizz", "แบบฝึกทักษะสื่อ CPA Approach", "เกมคณิตศาสตร์ Math Board Game"]
+            },
+            "ภาษาไทย": {
+                skills: ["การอ่านจับใจความสำคัญ", "การแจกลูกสะกดคำ อ่านออกเขียนได้", "การเขียนเรื่องตามจินตนาการ", "การคิดวิเคราะห์วรรณคดีและหลักภาษา"],
+                innovations: ["นิทานปฏิสัมพันธ์ + Kahoot", "รูปแบบการสอน SQ4R + แผนภาพความคิด", "แบบฝึกทักษะแจกลูกสะกดคำ", "เกมกระดาษและบัตรคำ Active Word Game"]
+            },
+            "วิทยาศาสตร์และเทคโนโลยี": {
+                skills: ["ทักษะกระบวนการทางวิทยาศาสตร์", "การตั้งสมมติฐานและสังเกต", "ทักษะการสืบเสาะหาความรู้ (Inquiry)", "การคิดเชิงคำนวณ (Computational Thinking)"],
+                innovations: ["การจัดการเรียนรู้สืบเสาะ 5E", "ชุดทดลองมือเปล่า Hands-on Lab Kit", "Phenomenon-Based Learning", "Unplugged Coding + บอร์ดเกม"]
+            },
+            "ภาษาต่างประเทศ": {
+                skills: ["ทักษะการสื่อสารภาษาอังกฤษ", "การจดจำคำศัพท์ (Vocabulary)", "การอ่านจับใจความ", "การออกเสียง Phonics"],
+                innovations: ["Phonics + สื่อเพลง/คลิปวิดีโอ", "เกมคำศัพท์ (Wordwall / Blooket)", "การสอน CLT สื่อสารตามสถานการณ์", "บัตรคำปฏิสัมพันธ์ Flashcards"]
+            },
+            "สังคมศึกษา ศาสนา และวัฒนธรรม": {
+                skills: ["ทักษะการคิดวิเคราะห์เชิงสังคม", "การประยุกต์ใช้หลักธรรมในชีวิต", "ความรู้และทักษะภูมิศาสตร์", "การเป็นพลเมืองดีและสิทธิหน้าที่"],
+                innovations: ["การเรียนรู้โดยใช้ปัญหาเป็นฐาน (PBL)", "เกมจำลองสถานการณ์ (Role Play)", "สื่อกรณีศึกษาปฏิสัมพันธ์", "แบบฝึกทักษะแผนผังความคิด (Mind Mapping)"]
+            },
+            "สุขศึกษาและพลศึกษา": {
+                skills: ["ทักษะการเคลื่อนไหวร่างกายพื้นฐาน", "การดูแลสุขภาพและความปลอดภัย", "การเล่นเกมและกีฬาตามกฎกติกา", "การทำงานร่วมกับผู้อื่น"],
+                innovations: ["การสาธิตร่วมกับการปฏิบัติจริง (Active Practice)", "แบบฝึกทักษะการเคลื่อนไหวประกอบจังหวะ", "เกมการเรียนรู้สุขศึกษาเชิงรุก", "การใช้สื่อวิดีโอวิเคราะห์ท่าทาง"]
+            },
+            "ศิลปะ": {
+                skills: ["ทักษะการสร้างสรรค์งานทัศนศิลป์", "จินตนาการและการถ่ายทอดความคิด", "ทักษะการปฏิบัติจังหวะและดนตรี", "การซาบซึ้งและประเมินคุณค่าศิลปะ"],
+                innovations: ["กระบวนการเรียนรู้แบบสร้างสรรค์ (Creative-Based)", "ชุดสื่อการเรียนรู้ผสมผสาน (Mixed Media Kit)", "แบบฝึกปฏิบัติขั้นตอนศิลปะประจักษ์ตา", "การสอนดนตรีเชิงรุกด้วยกิจกรรมกลุ่ม"]
+            },
+            "การงานอาชีพ": {
+                skills: ["ทักษะกระบวนการทำงานและอาชีพ", "การแก้ปัญหาในการทำงานบ้าน/เกษตร", "ทักษะงานช่างและประดิษฐ์พื้นฐาน", "การวางแผนและจัดระบบงาน"],
+                innovations: ["การสอนตามแนวคิดทักษะปฏิบัติของ SIMPSON", "ชุดกิจกรรมการเรียนรู้แบบลงมือทำ (Hands-on Active)", "โครงงานงานอาชีพขนาดย่อย (Mini Project)", "สื่อขั้นตอนการทำงานประจักษ์ตา"]
+            },
+            "กิจกรรมพัฒนาผู้เรียน": {
+                skills: ["ระเบียบแถว-บุคคลประกอบอาวุธ", "การสวนสนาม", "การก่อกองไฟและการประกอบอาหาร", "เงื่อนเชือก", "การผูกแน่น", "การบรรจุเครื่องหลัง", "การผจญภัย"]
+            }
+        };
+
+        const defaultPreset = {
+            skills: ["ทักษะกระบวนการคิดและแก้ปัญหา", "การจับใจความและการประยุกต์ใช้", "ทักษะการปฏิบัติงานและการมีส่วนร่วม", "เจตคติและความสนใจเรียนรู้"],
+            innovations: ["รูปแบบ Active Learning", "ชุดกิจกรรมเชิงรุก + สื่อรูปธรรม", "สื่อดิจิทัลและเกมการเรียนรู้", "แบบฝึกทักษะการปฏิบัติ"]
+        };
+
+        function handleAreaChange() {
+            const area = document.getElementById('learningArea').value;
+            const subjects = areaSubjectMap[area] || [area];
+            const datalist = document.getElementById('subjectOptions');
+            
+            datalist.innerHTML = subjects.map(s => `<option value="${s}">`).join('');
+            document.getElementById('subject').value = subjects[0];
+            handleSubjectChange();
+        }
+
+        function handleSubjectChange() {
+            const areaInput = document.getElementById('learningArea').value;
+            const subjectInput = document.getElementById('subject').value.trim();
+            let data = defaultPreset;
+            
+            if (presets[areaInput]) {
+                data = presets[areaInput];
+            } else {
+                for (const key in presets) {
+                    if (subjectInput.includes(key) || key.includes(subjectInput)) {
+                        data = presets[key];
+                        break;
+                    }
+                }
+            }
+
+            document.getElementById('skillBadges').innerHTML = data.skills.map(s => `
+                <button type="button" onclick="selectSkill('${s}')" class="chip-btn bg-white hover:bg-blue-100 text-blue-900 border border-blue-200 text-[11px] px-2.5 py-1 rounded-lg font-medium shadow-sm flex items-center gap-1">
+                    <span class="text-blue-500 font-bold">+</span> ${s}
+                </button>
+            `).join('');
+
+            document.getElementById('innovationBadges').innerHTML = data.innovations.map(i => `
+                <button type="button" onclick="selectInnovation('${i}')" class="chip-btn bg-white hover:bg-emerald-100 text-emerald-900 border border-emerald-200 text-[11px] px-2.5 py-1 rounded-lg font-medium shadow-sm flex items-center gap-1">
+                    <span class="text-emerald-500 font-bold">+</span> ${i}
+                </button>
+            `).join('');
+        }
+
+        function selectSkill(val) {
+            document.getElementById('targetSkill').value = val;
+            showToast(`เลือกทักษะ: "${val}"`);
+        }
+
+        function selectInnovation(val) {
+            document.getElementById('innovation').value = val;
+            showToast(`เลือกนวัตกรรม: "${val}"`);
+        }
+
+        window.onload = function() {
+            handleAreaChange();
+            selectSkill("การก่อกองไฟและการประกอบอาหาร");
+            selectInnovation("รูปแบบ Open Approach + สื่อรูปธรรม");
+        };
+
+        async function generatePA(event) {
+            event.preventDefault();
+            
+            const area = document.getElementById('learningArea').value;
+            const subject = document.getElementById('subject').value;
+            const grade = document.getElementById('grade').value;
+            const rank = document.getElementById('rank').value;
+            const skill = document.getElementById('targetSkill').value;
+            const innovation = document.getElementById('innovation').value;
+
+            // UI Loading states
+            document.getElementById('placeholderState').classList.add('hidden');
+            document.getElementById('docResult').classList.add('hidden');
+            document.getElementById('docActions').classList.add('hidden');
+            document.getElementById('loadingState').classList.remove('hidden');
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+            document.getElementById('btnText').innerHTML = `<span class="flex items-center gap-2"><div class="spinner"></div> กำลังประมวลผลด้วย AI...</span>`;
+
+            // System & User Prompts exactly matching specified requirements
+            const systemPrompt = `ร่างประเด็นท้าทาย คุณคือผู้เชี่ยวชาญด้านกฎเกณฑ์และระบบการประเมินวิทยฐานะข้าราชการครู (PA) ตามหลักเกณฑ์ของ ก.ค.ศ. ประเทศไทย มีความเชี่ยวชาญระดับสูงในการออกแบบนวัตกรรมการเรียนรู้ จิตวิทยาเด็กมัธยมศึกษาตอนต้น (ม.1-3) และการเขียนเล่มรายงานทางวิชาการ`;
+
+            const userPrompt = `หน้าที่ของคุณคือการช่วยฉันร่าง "ประเด็นท้าทาย (PA1/ส)" และ "โครงร่างเล่มรายงานผล 5 บท" โดยอ้างอิงจากข้อมูลบริบทชั้นเรียนมัธยมของฉันดังนี้:
+- กลุ่มสาระการเรียนรู้/วิชา: ${area} (${subject})
+- ระดับชั้น: ${grade}
+- วิทยฐานะปัจจุบันหรือวิทยฐานะที่ต้องการขอรับการประเมิน: ${rank}
+- ประเด็นปัญหา/ทักษะที่ต้องการแก้: ${skill}
+- นวัตกรรม/สื่อการสอน: ${innovation}
+
+โปรดส่งมอบผลลัพธ์แยกเป็น 2 ส่วน ด้วยภาษาวิจัยและภาษาทางราชการที่ถูกต้อง สละสลวย ดังนี้:
+
+ส่วนที่ 1: การเขียนประเด็นท้าทาย (PA 1/ส) ตามโครงสร้าง ก.ค.ศ.
+1. ชื่อประเด็นท้าทาย: (ให้ตั้งชื่อที่สะท้อนถึงการแก้ปัญหา พัฒนาทักษะ และระบุนวัตกรรม/สื่อการสอนที่สอดคล้องกับเด็ก ม.1-3)
+2. สภาพปัญหาการจัดการเรียนรู้และคุณภาพการเรียนรู้ของผู้เรียน: (วิเคราะห์ Pain Point ของเด็กมัธยมในวิชานี้ เช่น สมาธิสั้น เบื่อหน่าย หรือขาดทักษะพื้นฐาน)
+3. วิธีการดำเนินการให้บรรลุผล: (เขียนแบ่งเป็นขั้นตอนย่อยตามวงจรคุณภาพ PDCA หรือการออกแบบนวัตกรรม แนะนำเครื่องมือ EdTech หรือสื่อเชิงรุก Active Learning ที่เหมาะสมกับวัย)
+4. ผลลัพธ์การพัฒนาที่คาดหวัง:
+- เชิงปริมาณ: (กำหนดตัวชี้วัดเป้าหมายเป็นร้อยละของนักเรียนที่ผ่านเกณฑ์)
+- เชิงคุณภาพ: (อธิบายการเปลี่ยนแปลงด้านทักษะ เจตคติ หรือพฤติกรรมการเรียนรู้ของเด็ก)
+
+ส่วนที่ 2: โครงร่างเล่มรายงานสรุปผลประเด็นท้าทาย (5 บท)
+โปรดสรุปโครงสร้างหัวข้อ (Outline) ที่ฉันต้องนำไปเขียนในเล่มรายงานสรุปหลังจากทำประเด็นท้าทายเสร็จสิ้น ตั้งแต่บทที่ 1 ถึง บทที่ 5 เพื่อให้ฉันนำไปขยายความต่อได้ง่ายที่สุด
+
+เขียนคำตอบทั้งหมดเป็นภาษาไทยวิชาการที่น่าเชื่อถือ และถูกต้องตามเกณฑ์การประเมินวิทยฐานะยุคปัจจุบัน`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userPrompt }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            title: { type: "STRING", description: "ชื่อประเด็นท้าทายที่สะท้อนการแก้ปัญหา/พัฒนาตามวิทยฐานะ" },
+                            problem: { type: "STRING", description: "สภาพปัญหา Pain Point ของเด็กมัธยม จิตวิทยา และเหตุผลความจำเป็น" },
+                            pdca: { type: "STRING", description: "วิธีการดำเนินการให้บรรลุผล วงจร PDCA ละเอียดเป็นข้อๆ" },
+                            quant: { type: "STRING", description: "ผลลัพธ์เชิงปริมาณ (ร้อยละ)" },
+                            qual: { type: "STRING", description: "ผลลัพธ์เชิงคุณภาพ การเปลี่ยนแปลงทักษะ/พฤติกรรม" },
+                            fiveChapters: { type: "STRING", description: "โครงร่างรายงานผล 5 บท สรุปละเอียดน่าอ่าน" }
+                        },
+                        required: ["title", "problem", "pdca", "quant", "qual", "fiveChapters"]
+                    }
+                }
+            };
+
+            const apiKey = ""; // Runtime automatically injects API Key if available
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetchWithRetry(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates[0]?.content?.parts?.[0]?.text) {
+                    const parsedData = JSON.parse(result.candidates[0].content.parts[0].text);
+                    renderResults(parsedData, area, subject, grade, rank);
+                } else {
+                    renderFallback(area, subject, grade, rank, skill, innovation);
+                }
+            } catch (err) {
+                console.warn("Using template fallback engine:", err);
+                renderFallback(area, subject, grade, rank, skill, innovation);
+            } finally {
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('docResult').classList.remove('hidden');
+                document.getElementById('docActions').classList.remove('hidden');
+                
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                document.getElementById('btnText').innerText = "วิเคราะห์และร่าง PA1/ส ด้วย AI";
+                showToast("ร่างประเด็นท้าทายตามเกณฑ์ ก.ค.ศ. เรียบร้อยแล้ว!");
+            }
+        }
+
+        // Fetch with exponential backoff retry logic
+        async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
+            try {
+                const res = await fetch(url, options);
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                return res;
+            } catch (err) {
+                if (retries > 0) {
+                    await new Promise(r => setTimeout(r, delay));
+                    return fetchWithRetry(url, options, retries - 1, delay * 2);
+                }
+                throw err;
+            }
+        }
+
+        function renderResults(data, area, subject, grade, rank) {
+            document.getElementById('tagRank').innerHTML = `<i class="fa-solid fa-award"></i> วิทยฐานะ: ${rank}`;
+            document.getElementById('tagSubjectClass').innerText = `${area} (${subject}) | ${grade}`;
+            
+            document.getElementById('resTitle').innerText = data.title;
+            document.getElementById('resProblem').innerText = data.problem;
+            document.getElementById('resPDCA').innerText = data.pdca;
+            document.getElementById('resQuant').innerText = data.quant;
+            document.getElementById('resQual').innerText = data.qual;
+            document.getElementById('resFiveChapters').innerText = data.fiveChapters;
+        }
+
+        // Offline / Fallback Generator
+        function renderFallback(area, subject, grade, rank, skill, innovation) {
+            let verb = "การแก้ปัญหา", rankKey = "แก้ไขปัญหา";
+            if (rank.includes("ชำนาญการพิเศษ")) { verb = "การพัฒนาและริเริ่ม"; rankKey = "ริเริ่มและพัฒนา"; }
+            else if (rank.includes("เชี่ยวชาญ")) { verb = "การคิดค้นและปรับเปลี่ยน"; rankKey = "คิดค้น ปรับเปลี่ยน"; }
+
+            const title = `${verb}${skill} รายวิชา${subject} ของนักเรียนชั้น${grade} โดยใช้นวัตกรรม ${innovation} เพื่อส่งเสริมผลสัมฤทธิ์ทางการเรียนและการเรียนรู้เชิงรุก (Active Learning)`;
+            
+            const problem = `จากการจัดการเรียนรู้กลุ่มสาระการเรียนรู้ ${area} รายวิชา ${subject} ชั้น ${grade} พบว่าผู้เรียนส่วนใหญ่ประสบปัญหาด้าน "${skill}" ซึ่งเป็นทักษะสำคัญในการเรียนรู้\n\nวิเคราะห์สภาพบริบทและธรรมชาติของผู้เรียนในวัยมัธยมศึกษาพบปัจจัย 3 ด้าน:\n1. ด้านพัฒนาการและสมาธิ: นักเรียนในวัยมัธยมประถมศึกษามีช่วงความสนใจ (Attention Span) สั้น ต้องการเรียนรู้ผ่านรูปธรรมและการลงมือปฏิบัติ (Hands-on Experience) การสอนแบบบรรยาย Passive Learning ทำให้นักเรียนขาดความกระตือรือร้น\n2. ด้านทักษะและกระบวนการคิด: นักเรียนยังขาดทักษะการคิดที่เป็นระบบ ไม่สามารถเชื่อมโยงแนวคิดนามธรรมเข้ากับสถานการณ์จริงได้ ส่งผลให้เกิดเจตคติเชิงลบ\n3. ด้านสื่อและนวัตกรรมเดิม: ขาดแคลนสื่อเชิงรุกและนวัตกรรมเทคโนโลยีการศึกษา (EdTech) ที่ช่วยกระตุ้นความสนใจและรองรับความแตกต่างระหว่างบุคคล\n\nผู้จัดทำจึงได้ ${rankKey} นวัตกรรม "${innovation}" เข้ามาจัดกิจกรรม Active Learning เพื่อแก้ปัญหาและพัฒนาทักษะ ${skill} ให้บรรลุเป้าหมายตามเกณฑ์ ก.ค.ศ.`;
+
+            const pdca = `📌 Phase 1: Plan (การวางแผนและออกแบบ)\n1.1 วิเคราะห์หลักสูตรแกนกลางฯ ตัวชี้วัดวิชา ${subject} ชั้น ${grade} และวิเคราะห์ผู้เรียนเป็นรายบุคคล\n1.2 ออกแบบนวัตกรรม "${innovation}" และแผนการจัดการเรียนรู้ Active Learning ที่สอดคล้องกับพัฒนาการเด็กประถม\n1.3 นำนวัตกรรมให้ผู้เชี่ยวชาญตรวจสอบความถูกต้อง (Content Validity) และปรับปรุงแก้ไข\n1.4 ทดสอบวัดผลสัมฤทธิ์/ทักษะก่อนเรียน (Pre-test)\n\n📌 Phase 2: Do (การปฏิบัติการเรียนรู้)\n2.1 ดำเนินการจัดการเรียนรู้ตามแผน Active Learning ด้วยนวัตกรรม "${innovation}"\n2.2 จัดกิจกรรมเป็นขั้นตอน เน้นการมีส่วนร่วม ลงมือปฏิบัติจริง และดูแลช่วยเหลือผู้เรียนเป็นรายบุคคลอย่างใกล้ชิด\n\n📌 Phase 3: Check (การตรวจสอบและประเมินผล)\n3.1 ทดสอบหลังเรียน (Post-test) ด้าน ${skill} และประเมินพฤติกรรมการเรียนรู้\n3.2 ประเมินเจตคติและความพึงพอใจของนักเรียนที่มีต่อนวัตกรรม\n\n📌 Phase 4: Act (การปรับปรุงและพัฒนา)\n4.1 วิเคราะห์ผลการประเมินเพื่อสะท้อนผลการเรียนรู้ผ่านชุมชนการเรียนรู้ทางวิชาชีพ (PLC)\n4.2 จัดกิจกรรมซ่อมเสริม (Remediation) สำหรับนักเรียนที่ยังไม่ผ่านเกณฑ์เป้าหมาย`;
+
+            const quant = `นักเรียนชั้น ${grade} ไม่น้อยกว่าร้อยละ 75 ที่เรียนด้วยนวัตกรรม ${innovation} มีผลสัมฤทธิ์ทางการเรียน/คะแนนพัฒนาการด้าน ${skill} หลังเรียนสูงกว่าก่อนเรียนอย่างมีนัยสำคัญ`;
+            
+            const qual = `นักเรียนชั้น ${grade} มีพัฒนาการด้าน ${skill} เพิ่มขึ้นอย่างเห็นได้ชัด มีสมาธิและความกระตือรือร้นในการเรียนรู้เพิ่มขึ้น เกิดทักษะการทำงานร่วมกับผู้อื่น และมีเจตคติที่ดีต่อการเรียนรู้วิชา ${subject}`;
+
+            const fiveChapters = `บทที่ 1 บทนำ: ความสำคัญและความเป็นมาของปัญหา (สภาพบริบทชั้นเรียนมัธยม ก.ค.ศ.), วัตถุประสงค์การวิจัย, ขอบเขตการวิจัย (ประชากรกลุ่มเป้าหมาย ${grade}), นิยามศัพท์เฉพาะ (${innovation}, ${skill}), ประโยชน์ที่คาดว่าจะได้รับ\n\nบทที่ 2 เอกสารและงานวิจัยที่เกี่ยวข้อง: หลักสูตรกลุ่มสาระ ${area} วิชา ${subject}, ทฤษฎีพัฒนาการสติปัญญาและจิตวิทยาเด็กมัธยม, แนวคิด Active Learning และนวัตกรรม ${innovation}, แนวคิดเกี่ยวกับทักษะ ${skill}, งานวิจัยที่เกี่ยวข้อง\n\nบทที่ 3 วิธีดำเนินการวิจัย: กลุ่มเป้าหมายนักเรียนชั้น ${grade}, เครื่องมือวิจัย (แผนสอน Active Learning, นวัตกรรม ${innovation}, แบบทดสอบ), การสร้างและหาคุณภาพเครื่องมือ (IOC), การเก็บรวบรวมข้อมูล (Pre-test/Post-test), สถิติที่ใช้ในการวิเคราะห์ข้อมูล (ค่าเฉลี่ย, S.D., t-test dependent)\n\nบทที่ 4 ผลการวิเคราะห์ข้อมูล: ผลการเปรียบเทียบผลสัมฤทธิ์/ทักษะด้าน ${skill} ก่อนและหลังเรียนด้วยนวัตกรรม ${innovation}, ผลการประเมินความพึงพอใจของผู้เรียน\n\nบทที่ 5 สรุป อภิปรายผล และข้อเสนอแนะ: สรุปผลการพัฒนานวัตกรรม, การอภิปรายผลเชื่อมโยงกับทฤษฎีจิตวิทยามัธยมและงานวิจัย, ข้อเสนอแนะในการนำผลไปใช้ในวิชาอื่น และข้อเสนอแนะในการทำวิจัยครั้งต่อไป`;
+
+            renderResults({ title, problem, pdca, quant, qual, fiveChapters }, area, subject, grade, rank);
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('outputContent').innerText;
+            const area = document.createElement('textarea');
+            area.value = text;
+            document.body.appendChild(area);
+            area.select();
+            document.execCommand('copy');
+            document.body.removeChild(area);
+            showToast("คัดลอกข้อความทั้งหมดเรียบร้อยแล้ว!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none'), 3000);
+        }
+    </script>
+</body>
+</html>
